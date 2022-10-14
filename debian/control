@@ -1,0 +1,26 @@
+Source: node-statuses
+Section: javascript
+Priority: optional
+Maintainer: Debian Javascript Maintainers <pkg-javascript-devel@lists.alioth.debian.org>
+Uploaders: Kartik Kulkarni <kartik.koolks@gmail.com>
+Build-Depends: debhelper-compat (= 12)
+ , mocha <!nocheck>
+ , pkg-js-tools (>= 0.9.35~)
+Standards-Version: 4.5.0
+Vcs-Browser: https://salsa.debian.org/js-team/node-statuses
+Vcs-Git: https://salsa.debian.org/js-team/node-statuses.git
+Homepage: https://github.com/jshttp/statuses
+Testsuite: autopkgtest-pkg-nodejs
+Rules-Requires-Root: no
+
+Package: node-statuses
+Architecture: all
+Depends: ${misc:Depends}
+ , nodejs
+Multi-Arch: foreign
+Description: HTTP status utility
+ statuses is a HTTP status utility built for node which provides
+ appropriate code for valid HTTP codes in Integer or valid HTTP
+ codes in String and throws error for invalid codes.
+ .
+ Node.js is an event-based server-side JavaScript engine.
