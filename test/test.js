@@ -12,15 +12,15 @@ describe('status', function () {
       })
 
       it('should accept a number', function () {
-        assert.equal(status(200), 200)
+        assert.strictEqual(status(200), 'OK')
       })
 
       it('should accept a string', function () {
-        assert.equal(status('OK'), 200)
+        assert.strictEqual(status('OK'), 200)
       })
 
       it('should accept a string number', function () {
-        assert.equal(status('200'), 200)
+        assert.strictEqual(status('200'), 'OK')
       })
 
       it('should reject an object', function () {
@@ -30,10 +30,10 @@ describe('status', function () {
   })
 
   describe('when given a number', function () {
-    it('should be truthy when a valid status code', function () {
-      assert.ok(status(200))
-      assert.ok(status(404))
-      assert.ok(status(500))
+    it('should return message when a valid status code', function () {
+      assert.strictEqual(status(200), 'OK')
+      assert.strictEqual(status(404), 'Not Found')
+      assert.strictEqual(status(500), 'Internal Server Error')
     })
 
     it('should throw for invalid status code', function () {
@@ -45,13 +45,17 @@ describe('status', function () {
       assert.throws(status.bind(null, 299), /invalid status code/)
       assert.throws(status.bind(null, 310), /invalid status code/)
     })
+
+    it('should throw for discontinued status code', function () {
+      assert.throws(status.bind(null, 306), /invalid status code/)
+    })
   })
 
   describe('when given a string', function () {
-    it('should be truthy when a valid status code', function () {
-      assert.ok(status('200'))
-      assert.ok(status('404'))
-      assert.ok(status('500'))
+    it('should return message when a valid status code', function () {
+      assert.strictEqual(status('200'), 'OK')
+      assert.strictEqual(status('404'), 'Not Found')
+      assert.strictEqual(status('500'), 'Internal Server Error')
     })
 
     it('should be truthy when a valid status message', function () {
@@ -68,6 +72,8 @@ describe('status', function () {
 
     it('should throw for unknown status message', function () {
       assert.throws(status.bind(null, 'too many bugs'), /invalid status message/)
+      assert.throws(status.bind(null, 'constructor'), /invalid status message/)
+      assert.throws(status.bind(null, '__proto__'), /invalid status message/)
     })
 
     it('should throw for unknown status code', function () {
@@ -75,22 +81,10 @@ describe('status', function () {
     })
   })
 
-  describe('.STATUS_CODES', function () {
-    it('should be a map of code to message', function () {
-      assert.equal(status.STATUS_CODES[200], 'OK')
-    })
-
-    it('should include codes from Node.js', function () {
-      Object.keys(http.STATUS_CODES).forEach(function forEachCode (code) {
-        assert.ok(status.STATUS_CODES[code], 'contains ' + code)
-      })
-    })
-  })
-
   describe('.codes', function () {
     it('should include codes from Node.js', function () {
       Object.keys(http.STATUS_CODES).forEach(function forEachCode (code) {
-        assert.notEqual(status.codes.indexOf(Number(code)), -1, 'contains ' + code)
+        assert.notStrictEqual(status.codes.indexOf(Number(code)), -1, 'contains ' + code)
       })
     })
   })
@@ -98,7 +92,7 @@ describe('status', function () {
   describe('.empty', function () {
     it('should be an object', function () {
       assert.ok(status.empty)
-      assert.equal(typeof status.empty, 'object')
+      assert.strictEqual(typeof status.empty, 'object')
     })
 
     it('should include 204', function () {
@@ -106,10 +100,22 @@ describe('status', function () {
     })
   })
 
+  describe('.message', function () {
+    it('should be a map of code to message', function () {
+      assert.strictEqual(status.message[200], 'OK')
+    })
+
+    it('should include codes from Node.js', function () {
+      Object.keys(http.STATUS_CODES).forEach(function forEachCode (code) {
+        assert.ok(status.message[code], 'contains ' + code)
+      })
+    })
+  })
+
   describe('.redirect', function () {
     it('should be an object', function () {
       assert.ok(status.redirect)
-      assert.equal(typeof status.redirect, 'object')
+      assert.strictEqual(typeof status.redirect, 'object')
     })
 
     it('should include 308', function () {
@@ -120,7 +126,7 @@ describe('status', function () {
   describe('.retry', function () {
     it('should be an object', function () {
       assert.ok(status.retry)
-      assert.equal(typeof status.retry, 'object')
+      assert.strictEqual(typeof status.retry, 'object')
     })
 
     it('should include 504', function () {
