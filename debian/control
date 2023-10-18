@@ -3,10 +3,10 @@ Section: javascript
 Priority: optional
 Maintainer: Debian Javascript Maintainers <pkg-javascript-devel@lists.alioth.debian.org>
 Uploaders: Kartik Kulkarni <kartik.koolks@gmail.com>
-Build-Depends: debhelper-compat (= 12)
+Build-Depends: debhelper-compat (= 13)
+ , dh-sequence-nodejs
  , mocha <!nocheck>
- , pkg-js-tools (>= 0.9.35~)
-Standards-Version: 4.5.0
+Standards-Version: 4.6.0
 Vcs-Browser: https://salsa.debian.org/js-team/node-statuses
 Vcs-Git: https://salsa.debian.org/js-team/node-statuses.git
 Homepage: https://github.com/jshttp/statuses
@@ -16,7 +16,8 @@ Rules-Requires-Root: no
 Package: node-statuses
 Architecture: all
 Depends: ${misc:Depends}
- , nodejs
+Provides: ${nodejs:Provides}
+Breaks: node-http-errors (<< 2)
 Multi-Arch: foreign
 Description: HTTP status utility
  statuses is a HTTP status utility built for node which provides
